@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle } from '@mui/icons-material';
-import { logout, auth, signInWithGoogle,  } from '../firebaseConfig';
+import { logout, auth, signInWithFacebook, signInWithGoogle, signInWithphone } from '../firebaseConfig';
 import Login from './telas/login/Login';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -52,7 +52,7 @@ function MenuPrincipal() {
     };
 
     const handleCloseUserMenu = () => {
-        signInWithGoogle();
+        signInWithFacebook();
         setAnchorElUser(null);
     };
 
