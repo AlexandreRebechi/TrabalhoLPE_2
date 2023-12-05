@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {getAuth, signInWithPopup, signOut, FacebookAuthProvider, GoogleAuthProvider,  } from
+import {getAuth, signInWithPopup, signOut, FacebookAuthProvider, GoogleAuthProvider, OAuthProvider, reauthenticateWithPopup} from
 "firebase/auth";
 import { getFirestore, query, getDocs, collection, where, addDoc } from
 "firebase/firestore";
@@ -24,6 +24,8 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+
+
 
 //export default firebaseApp;
 
@@ -62,22 +64,34 @@ const signInWithGoogle = async () => {
         alert(err.message);
     }
 };
+
 const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
     signInWithPopup(auth, provider)
-    .then((re)=>{
+    .then((re) => {
         console.log(re);
-        const credential = FacebookAuthProvider.credentialFromResult(re);
-        const accessToken = credential.accessToken;
     })
     .catch((err)=>{
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        const credential = FacebookAuthProvider.credentialFromError(err);
         console.log(err.message);
     })
-
 };
+const provider = new OAuthProvider('microsoft.com');
+const signInWithMicrosoft = async () =>{
+   
+    signInWithPopup(auth, provider)
+    .then((result) => {
+        // User is signed in.
+        // IdP data available in result.additionalUserInfo.profile.
+    
+        // Get the OAuth access token and ID Token
+        const credential = OAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+        const idToken = credential.idToken;
+      })
+    .catch((err)=>{
+        console.log(err.message);
+    })
+}
 
 
 const logout = () => {
@@ -87,6 +101,6 @@ const logout = () => {
 export {
     auth,
     db,
-    signInWithGoogle,
+    signInWithFacebook,
     logout,
 };
